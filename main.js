@@ -1,4 +1,4 @@
-let tag = [];
+let tags = [];
 
 const inputTagContainer = document.querySelector("#input-tag");
 const tagsContainer = document.createElement("div");
@@ -26,23 +26,49 @@ inputTagContainer.addEventListener("click", (e) => {
 inputTag.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && inputTag.textContent !== "") {
     e.preventDefault();
-    tag.push(inputTag.textContent);
-    tagsContainer.innerHTML = "";
-
-    if (tag) {
-      tag.forEach((tag) => {
-        const nTag = document.createElement("div");
-        nTag.classList.add("tag");
-        nTag.innerHTML = `${tag} <span class="tag-delete" data-id${(
-          Math.random() * 100
-        )
-          .toString(36)
-          .slice(3)}>X</span>`;
-        console.log(nTag);
-        tagsContainer.insertBefore(nTag, tagsContainer.lastElementChild);
-      });
+    if (!existTag(inputTag.textContent)) {
+      tags.push(inputTag.textContent);
+      inputTag.textContent = "";
+      renderTags();
     }
+  } else if (
+    e.key === "Backspace" &&
+    inputTag.textContent === "" &&
+    tags.length > 0
+  ) {
+    tags.pop();
+    renderTags();
   }
-
-  console.log(tag);
 });
+
+function renderTags() {
+  const html = tags.map((tag) => {
+    const tagElement = document.createElement("div");
+    const tagButton = document.createElement("button");
+    tagElement.classList.add("tag-item");
+    tagButton.textContent = "X";
+    tagButton.addEventListener("click", (e) => {
+      //elimina la etiqueta
+
+      removeTags(tag);
+    });
+    tagElement.appendChild(document.createTextNode(tag));
+    tagElement.appendChild(tagButton);
+    return tagElement;
+  });
+  tagsContainer.innerHTML = "";
+  html.forEach((ele) => {
+    tagsContainer.append(ele);
+  });
+  tagsContainer.appendChild(inputTag);
+  inputTag.focus();
+}
+
+function existTag(value) {
+  return tags.includes(value);
+}
+
+function removeTags(value) {
+  tags = tags.filter((tag) => tag !== value);
+  renderTags();
+}

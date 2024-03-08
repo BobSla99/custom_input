@@ -20,10 +20,27 @@ body {
   flex-wrap: wrap;
 }
 
-.tag {
-  border: none;
-  border: 1px solid #ccc;
+.tag-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: wrap;
+}
+.tag-item {
+  border: solid 1px #ccc;
+  background-color: #eee;
+  display: flex;
   padding: 5px;
   border-radius: 5px;
-  background-color: aquamarine;
+  align-items: center;
+}
+.tag-item button {
+  border: none;
+  border-radius: 50%;
+  margin-left: 2px;
+  padding: 3px;
+}
+
+.tag-item button:hover {
+  background-color: #ccc;
 }
